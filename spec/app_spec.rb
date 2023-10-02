@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe HelloWorld do
   include Rack::Test::Methods
 
