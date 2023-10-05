@@ -6,4 +6,6 @@ Bundler.require
 
 require "./lib/app"
 
+use Rack::Reloader
+
 run HelloWorld.new
