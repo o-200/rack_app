@@ -5,7 +5,9 @@ require "bundler"
 Bundler.require
 
 require "./lib/app"
+require "./lib/middleware"
 
 use Rack::Reloader
+use Middleware::ConsoleLogger
 
 run HelloWorld.new
