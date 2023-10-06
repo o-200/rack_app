@@ -8,6 +8,8 @@ require "./lib/app"
 require "./lib/middleware"
 
 use Rack::Reloader
-use Middleware::ConsoleLogger
+# use Middleware::ConsoleLogger
+# use Middleware::AssetBuilder
+use Middleware::StatusError
 
 run HelloWorld.new
