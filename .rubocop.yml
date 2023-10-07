@@ -1,6 +1,9 @@
 AllCops:
   TargetRubyVersion: 3.1.2
 
+Style/GuardClause:
+  Enabled: false
+
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: double_quotes
@@ -17,4 +20,3 @@ Layout/LineLength:
 
 Lint/UnusedMethodArgument:
   Enabled: false
-
