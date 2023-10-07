@@ -6,25 +6,27 @@ module Middleware
 
     def call(env)
       path = env["REQUEST_PATH"]
-      if is_get?(env) && on_public?(path)
-        env["response"] = render(path)
+      status, headers, body = @app.call(env)
+
+      if on_public?(path) && file_exists?(path)
+        return Rack::Response.new(render(path)).finish
       else
-        env["status"] = 404
+        status = 404
       end
 
-      @app.call(env)
+      [status, headers, body]
     end
 
     def on_public?(path)
       path.split("/")[1] == "public"
     end
 
-    def render(path)
-      File.read(".#{path}")
+    def file_exists?(path)
+      File.exist?(".#{path}") && File.file?(".#{path}")
     end
 
-    def is_get?(env)
-      env["REQUEST_METHOD"] == "GET"
+    def render(path)
+      File.read(".#{path}")
     end
   end
 end
