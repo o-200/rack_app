@@ -7,7 +7,7 @@ module Middleware
     end
 
     def call(env)
-      path = env["REQUEST_PATH"]
+      path = env["PATH_INFO"]
       status, headers, body = @app.call(env)
 
       if on_public?(path) && file_exists?(path)
@@ -18,6 +18,8 @@ module Middleware
 
       [status, headers, body]
     end
+
+    private
 
     def on_public?(path)
       path.split("/")[1] == "public"

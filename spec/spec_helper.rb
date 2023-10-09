@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "./lib/app"
+require "./lib/middleware"
 require "rack/test"
 
 RSpec.configure do |config|
