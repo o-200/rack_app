@@ -2,19 +2,19 @@
 
 module Middleware
   class ErrorHandler
+    attr_reader :status
+
     def initialize(app)
       @app = app
     end
 
     def call(env)
-      status, headers, body = @app.call(env)
-      return Rack::Response.new(readfile("./public/#{status}.html")).finish if [404, 500].include?(status)
+      @status, headers, body = @app.call(env)
+      if [404, 500].include?(status)
+        return Rack::Response.new(File.read("./public/#{@status}.html")).finish
+      end
 
-      [status, headers, body]
-    end
-
-    def readfile(path)
-      File.read(path)
+      [@status, headers, body]
     end
   end
 end
