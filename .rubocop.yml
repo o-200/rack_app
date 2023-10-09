@@ -20,3 +20,6 @@ Layout/LineLength:
 
 Lint/UnusedMethodArgument:
   Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false

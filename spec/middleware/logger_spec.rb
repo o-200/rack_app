@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Middleware::Logger do
   let(:app) { double("app") }
   let(:env) { { "REQUEST_METHOD" => "GET", "PATH_INFO" => "/" } }

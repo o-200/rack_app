@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Middleware::AssetBuilder do
   let(:app) { double(call: [200, {}, ["Hello, World!"]]) }
   let(:env) { { "REQUEST_METHOD" => "GET", "PATH_INFO" => "/public/testfile.txt" } }
