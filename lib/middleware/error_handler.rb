@@ -9,11 +9,11 @@ module Middleware
     end
 
     def call(env)
-      @status, headers, body = @app.call(env)
+      status, headers, body = @app.call(env)
 
-      return Rack::Response.new(File.read("./public/#{@status}.html")).finish if [404, 500].include?(status)
+      return Rack::Response.new(File.read("./public/#{status}.html")).finish if [404, 500].include?(status)
 
-      [@status, headers, body]
+      [status, headers, body]
     end
   end
 end
