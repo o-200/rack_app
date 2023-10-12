@@ -11,8 +11,9 @@ module Middleware
       status, headers, body = @app.call(env)
 
       if on_public?(path) && file_exists?(path)
-        return Rack::Response.new(render(path)).finish
+        return Rack::Response.new(read_file(path)).finish unless danger_path?(path)
       else
+        env["logger"] = "404 Page Not Found"
         status = 404
       end
 
@@ -21,16 +22,20 @@ module Middleware
 
     private
 
+    def danger_path?(path)
+      path.include?("/..")
+    end
+
+    def read_file(path)
+      File.read(".#{path}")
+    end
+
     def on_public?(path)
       path.split("/")[1] == "public"
     end
 
     def file_exists?(path)
       File.exist?(".#{path}") && File.file?(".#{path}")
-    end
-
-    def render(path)
-      File.read(".#{path}")
     end
   end
 end

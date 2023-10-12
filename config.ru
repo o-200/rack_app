@@ -9,8 +9,8 @@ require "./lib/middleware"
 
 use Rack::Reloader
 
-use Middleware::ErrorHandler
 use Middleware::Logger
+use Middleware::ErrorHandler
 use Middleware::AssetBuilder
 
 run HelloWorld.new
