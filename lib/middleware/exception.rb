@@ -9,8 +9,8 @@ module Middleware
     end
 
     def call(env)
-      app.call(env)
-    rescue StandartError => e
+      @app.call(env)
+    rescue  => e
       unless env["logger"].nil?
         env["logger"].error e.message
         env["logger"].error e.backtrace

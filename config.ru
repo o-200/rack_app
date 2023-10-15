@@ -11,7 +11,7 @@ use Rack::Reloader
 
 use Middleware::Logger
 use Middleware::ErrorHandler
-use Middleware::AssetBuilder
 use Middleware::Exception
+use Middleware::AssetBuilder
 
 run HelloWorld.new
