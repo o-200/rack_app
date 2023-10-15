@@ -35,7 +35,7 @@ module Middleware
     end
 
     def file_exists?(path)
-      File.exist?(".#{path}") && File.file?(".#{path}")
+      File.exist?(".#{path}")
     end
   end
 end
