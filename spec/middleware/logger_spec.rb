@@ -2,34 +2,31 @@
 
 RSpec.describe Middleware::Logger do
   let(:app) { double("app") }
-  let(:env) { { "REQUEST_METHOD" => "GET", "PATH_INFO" => "/" } }
-  let(:status) { 200 }
-  let(:headers) { { "Content-Type" => "text/plain" } }
-  let(:body) { ["Hello, world!"] }
-  let(:time) { Time.now }
-
-  subject { described_class.new(app) }
+  let(:logger) { instance_double("Logger") }
+  let(:middleware) { described_class.new(app) }
 
   describe "#call" do
+    let(:env) { { "logger" => "Error message" } }
+    let(:response) { [200, {}, []] }
+
     before do
-      allow(app).to receive(:call).with(env).and_return([status, headers, body])
-      allow(File).to receive(:directory?).with("logs").and_return(true)
-      allow(File).to receive(:open).with("logs/server.log", "a+").and_yield(StringIO.new)
+      allow(app).to receive(:call).with(env).and_return(response)
+      allow(::Logger).to receive(:new).with($stdout).and_return(logger)
+      allow(logger).to receive(:error)
     end
 
-    it "calls the app with the given env" do
-      expect(app).to receive(:call).with(env).and_return([status, headers, body])
-      subject.call(env)
+    it "returns the response from the app" do
+      expect(middleware.call(env)).to eq(response)
     end
 
-    it "logs the request and response to a file" do
-      expect(File).to receive(:open).with("logs/server.log", "a+").and_yield(StringIO.new)
-      subject.call(env, time)
+    it "calls the app with the given environment" do
+      expect(app).to receive(:call).with(env).and_return(response)
+      middleware.call(env)
     end
 
-    it "logs the request method, path, and status" do
-      expected_message = "[#{time}] \"GET /\" 200\n"
-      expect { subject.call(env, time) }.to output(expected_message).to_stdout
+    it "logs the error message if present in the environment" do
+      expect(logger).to receive(:error).with("Error message")
+      middleware.call(env)
     end
   end
 end

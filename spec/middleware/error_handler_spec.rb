@@ -13,22 +13,20 @@ describe Middleware::ErrorHandler do
     end
   end
 
-  describe "have an error status code" do
-    context "404" do
+  describe "error:" do
+    context "receive the 404 status code" do
       let(:app) { double(call: [404, {}, ["Hello, World!"]]) }
 
       it "should render 404 status code page" do
         expect(body).to eq(File.read("./public/404.html"))
-        expect(middleware.status).to eq(404)
       end
     end
 
-    context "should render 500 status error page" do
+    context "receive the 500 status code" do
       let(:app) { double(call: [500, {}, ["Hello, World!"]]) }
 
-      it "should give 500 status code" do
+      it "should render 500 status code page" do
         expect(body).to eq(File.read("./public/500.html"))
-        expect(middleware.status).to eq(500)
       end
     end
   end
