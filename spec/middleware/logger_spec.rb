@@ -11,7 +11,7 @@ RSpec.describe Middleware::Logger do
 
     before do
       allow(app).to receive(:call).with(env).and_return(response)
-      allow(::Logger).to receive(:new).with($stdout).and_return(logger)
+      allow(Logger).to receive(:new).with($stdout).and_return(logger)
       allow(logger).to receive(:error)
     end
 
