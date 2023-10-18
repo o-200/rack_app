@@ -1,32 +1,52 @@
 name: Main
 
 on:
-  pull_request:
-    branches:
-      - 'main'
   push:
     branches:
-      - 'main'
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build:
+  test:
+    name: Run Tests
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          bundler-cache: true
+          ruby-version: 3.1.2
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
           gem install bundler
-          bundle install
+          bundle install --jobs 4 --retry 3
 
-      - name: Run tests
+      - name: Run Tests
         run: bundle exec rspec
 
-      - name: Run rubocop
-        run: bundle exec rubocop
+  lint:
+    name: Run RuboCop
+    runs-on: ubuntu-latest
 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1.2
+
+      - name: Install Dependencies
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+
+      - name: Run RuboCop
+        run: bundle exec rubocop
