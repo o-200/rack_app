@@ -13,7 +13,7 @@ module Middleware
       if on_public?(path) && file_exists?(path)
         return Rack::Response.new(read_file(path)).finish unless danger_path?(path)
       else
-        env["logger"] = "404 Page Not Found"
+        env["logger"]&.error("404 Page Not Found")
         status = 404
       end
 

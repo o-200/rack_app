@@ -2,7 +2,7 @@
 
 RSpec.describe Middleware::Logger do
   let(:app) { double("app") }
-  let(:logger) { instance_double("Logger") }
+  let(:logger) { instance_double(Logger) }
   let(:middleware) { described_class.new(app) }
 
   describe "#call" do
@@ -20,12 +20,7 @@ RSpec.describe Middleware::Logger do
     end
 
     it "calls the app with the given environment" do
-      expect(app).to receive(:call).with(env).and_return(response)
-      middleware.call(env)
-    end
-
-    it "logs the error message if present in the environment" do
-      expect(logger).to receive(:error).with("Error message")
+      expect(app).to receive(:call).with(env).and_return(env["logger"])
       middleware.call(env)
     end
   end

@@ -10,10 +10,10 @@ module Middleware
 
     def call(env)
       @app.call(env)
-    rescue  => e
+    rescue StandardError => e
       unless env["logger"].nil?
-        env["logger"].error e.message
-        env["logger"].error e.backtrace
+        env["logger"].error(e.message)
+        env["logger"].error(e.backtrace)
       end
 
       [500, { "content-type" => env["CONTENT_TYPE"] }, [""]]

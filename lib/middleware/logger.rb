@@ -10,11 +10,8 @@ module Middleware
     end
 
     def call(env)
-      status, headers, body = @app.call(env)
-
-      @logger.error(env["logger"]) if env["logger"]
-
-      [status, headers, body]
+      env["logger"] = @logger
+      @app.call(env)
     end
   end
 end
